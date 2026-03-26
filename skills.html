@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills - Collin Bishop</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #3ea5d9 0%, #2563a0 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+            cursor: none;
+            overflow: hidden;
+            margin: 0;
+            position: relative;
+        }
+
+        #backgroundCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 2;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #3ea5d9;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            color: #1a1a1a;
+        }
+
+        .back-btn {
+            background: #3ea5d9;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: #2563a0;
+        }
+
+        .skill-category {
+            margin-bottom: 35px;
+        }
+
+        .category-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #3ea5d9;
+            margin-bottom: 20px;
+        }
+
+        .skill-item {
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .skill-name {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #1a1a1a;
+        }
+
+        .skill-rating {
+            font-size: 0.95rem;
+            font-weight: bold;
+            color: #3ea5d9;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .skill-item:hover .skill-rating {
+            opacity: 1;
+        }
+
+        .skill-bar-container {
+            width: 100%;
+            height: 25px;
+            background: #f0f0f0;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 2px solid #ddd;
+        }
+
+        .skill-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #3ea5d9, #2563a0);
+            width: 0%;
+            border-radius: 10px;
+            transition: width 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.85rem;
+            font-weight: bold;
+        }
+
+        .skill-item:hover .skill-bar {
+            width: var(--skill-percentage);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .back-btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .skill-name {
+                font-size: 0.9rem;
+            }
+
+            .skill-bar {
+                font-size: 0.7rem;
+            }
+        }
+
+        .cursor-particle {
+            position: fixed;
+            width: 15px;
+            height: 15px;
+            background: #FFD700;
+            border-radius: 50%;
+            pointer-events: none;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+            animation: fadeOut 0.8s ease-out forwards;
+            z-index: 999;
+        }
+
+        @keyframes fadeOut {
+            0% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<canvas id="backgroundCanvas"></canvas>
+
+<div class="container">
+    <div class="header">
+        <h1>Skills</h1>
+        <a href="index.html" class="back-btn">Back</a>
+    </div>
+
+    <div class="skill-category">
+        <div class="category-title">Programming Languages</div>
+        
+        <div class="skill-item" style="--skill-percentage: 80%;">
+            <div class="skill-header">
+                <div class="skill-name">C++</div>
+                <div class="skill-rating">4/5</div>
+            </div>
+            <div class="skill-bar-container">
+                <div class="skill-bar"></div>
+            </div>
+        </div>
+
+        <div class="skill-item" style="--skill-percentage: 60%;">
+            <div class="skill-header">
+                <div class="skill-name">C#</div>
+                <div class="skill-rating">3/5</div>
+            </div>
+            <div class="skill-bar-container">
+                <div class="skill-bar"></div>
+            </div>
+        </div>
+
+        <div class="skill-item" style="--skill-percentage: 80%;">
+            <div class="skill-header">
+                <div class="skill-name">Python</div>
+                <div class="skill-rating">4/5</div>
+            </div>
+            <div class="skill-bar-container">
+                <div class="skill-bar"></div>
+            </div>
+        </div>
+
+        <div class="skill-item" style="--skill-percentage: 80%;">
+            <div class="skill-header">
+                <div class="skill-name">Java</div>
+                <div class="skill-rating">4/5</div>
+            </div>
+            <div class="skill-bar-container">
+                <div class="skill-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="skill-category">
+        <div class="category-title">Web Technologies</div>
+        
+        <div class="skill-item" style="--skill-percentage: 60%;">
+            <div class="skill-header">
+                <div class="skill-name">HTML</div>
+                <div class="skill-rating">3/5</div>
+            </div>
+            <div class="skill-bar-container">
+                <div class="skill-bar"></div>
+            </div>
+        </div>
+
+        <div class="skill-item" style="--skill-percentage: 40%;">
+            <div class="skill-header">
+                <div class="skill-name">CSS</div>
+                <div class="skill-rating">2/5</div>
+            </div>
+            <div class="skill-bar-container">
+                <div class="skill-bar"></div>
+            </div>
+        </div>
+
+        <div class="skill-item" style="--skill-percentage: 60%;">
+            <div class="skill-header">
+                <div class="skill-name">JavaScript</div>
+                <div class="skill-rating">3/5</div>
+            </div>
+            <div class="skill-bar-container">
+                <div class="skill-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="skill-category">
+        <div class="category-title">Tools & Databases</div>
+        
+        <div class="skill-item" style="--skill-percentage: 100%;">
+            <div class="skill-header">
+                <div class="skill-name">Excel</div>
+                <div class="skill-rating">5/5</div>
+            </div>
+            <div class="skill-bar-container">
+                <div class="skill-bar"></div>
+            </div>
+        </div>
+
+        <div class="skill-item" style="--skill-percentage: 60%;">
+            <div class="skill-header">
+                <div class="skill-name">SQL</div>
+                <div class="skill-rating">3/5</div>
+            </div>
+            <div class="skill-bar-container">
+                <div class="skill-bar"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="skill-category">
+        <div class="category-title">Soft Skills</div>
+        
+        <div class="skill-item" style="--skill-percentage: 100%;">
+            <div class="skill-header">
+                <div class="skill-name">Communication</div>
+                <div class="skill-rating">5/5</div>
+            </div>
+            <div class="skill-bar-container">
+                <div class="skill-bar"></div>
+            </div>
+        </div>
+
+        <div class="skill-item" style="--skill-percentage: 100%;">
+            <div class="skill-header">
+                <div class="skill-name">Teamwork Focus</div>
+                <div class="skill-rating">5/5</div>
+            </div>
+            <div class="skill-bar-container">
+                <div class="skill-bar"></div>
+            </div>
+        </div>
+
+        <div class="skill-item" style="--skill-percentage: 60%;">
+            <div class="skill-header">
+                <div class="skill-name">Product Management</div>
+                <div class="skill-rating">3/5</div>
+            </div>
+            <div class="skill-bar-container">
+                <div class="skill-bar"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('backgroundCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    
+    let mouseX = canvas.width / 2;
+    let mouseY = canvas.height / 2;
+    
+    const particles = [];
+    
+    class Particle {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.baseX = x;
+            this.baseY = y;
+            this.vx = 0;
+            this.vy = 0;
+            this.size = 4;
+        }
+        
+        update(mouseX, mouseY) {
+            const dx = mouseX - this.x;
+            const dy = mouseY - this.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            const maxDistance = 150;
+            
+            if (distance < maxDistance) {
+                const force = (maxDistance - distance) / maxDistance;
+                const angle = Math.atan2(dy, dx);
+                this.vx = -Math.cos(angle) * force * 3;
+                this.vy = -Math.sin(angle) * force * 3;
+            }
+            
+            this.vx *= 0.85;
+            this.vy *= 0.85;
+            
+            this.x += this.vx;
+            this.y += this.vy;
+            
+            // Add subtle drifting movement
+            const time = Date.now() * 0.001;
+            this.x += Math.sin(time + this.baseX * 0.1) * 0.3;
+            this.y += Math.cos(time + this.baseY * 0.1) * 0.3;
+        }
+        
+        draw(ctx) {
+            ctx.fillStyle = '#F5F5F5';
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+    
+    // Create particle grid
+    const gridSize = 20;
+    for (let y = 0; y < canvas.height; y += gridSize) {
+        for (let x = 0; x < canvas.width; x += gridSize) {
+            particles.push(new Particle(x, y));
+        }
+    }
+    
+    document.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        
+        // Create trail particle
+        const trailParticle = document.createElement('div');
+        trailParticle.className = 'cursor-particle';
+        trailParticle.style.left = (e.clientX - 7.5) + 'px';
+        trailParticle.style.top = (e.clientY - 7.5) + 'px';
+        
+        document.body.appendChild(trailParticle);
+        
+        setTimeout(() => {
+            trailParticle.remove();
+        }, 800);
+    });
+    
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+    
+    function animate() {
+        // Draw gradient background
+        const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        gradient.addColorStop(0, '#3ea5d9');
+        gradient.addColorStop(1, '#2563a0');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Update and draw particles
+        particles.forEach(particle => {
+            particle.update(mouseX, mouseY);
+            particle.draw(ctx);
+        });
+        
+        // Draw cursor ball
+        ctx.fillStyle = '#FFD700';
+        ctx.shadowColor = 'rgba(255, 215, 0, 0.8)';
+        ctx.shadowBlur = 15;
+        ctx.beginPath();
+        ctx.arc(mouseX, mouseY, 10, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowColor = 'transparent';
+        
+        requestAnimationFrame(animate);
+    }
+    
+    animate();
+</script>
+
+</body>
+</html>

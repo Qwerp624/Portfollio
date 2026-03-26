@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collin Bishop - Portfolio</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #3ea5d9 0%, #2563a0 100%);
+            cursor: none;
+            overflow: hidden;
+            margin: 0;
+            position: relative;
+        }
+
+        #backgroundCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            width: 90%;
+            max-width: 900px;
+        }
+
+        h1 {
+            font-size: 4rem;
+            color: #1a1a1a;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .tagline {
+            font-size: 1.8rem;
+            color: #1a1a1a;
+            margin-bottom: 60px;
+            font-weight: normal;
+        }
+
+        .contact-info {
+            margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .resume-download {
+            background: white;
+            color: #3ea5d9;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: 2px solid white;
+        }
+
+        .resume-download:hover {
+            background: transparent;
+            color: white;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .menu-item {
+            background: white;
+            padding: 50px 30px;
+            border-radius: 15px;
+            text-decoration: none;
+            color: #1a1a1a;
+            font-size: 1.8rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.5rem;
+            }
+
+            .tagline {
+                font-size: 1.3rem;
+            }
+
+            .menu-item {
+                font-size: 1.3rem;
+                padding: 30px 20px;
+            }
+
+            .menu-grid {
+                gap: 15px;
+            }
+        }
+
+        .cursor-particle {
+            position: fixed;
+            width: 15px;
+            height: 15px;
+            background: #FFD700;
+            border-radius: 50%;
+            pointer-events: none;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+            animation: fadeOut 0.8s ease-out forwards;
+            z-index: 999;
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; transform: scale(1); }
+            100% { opacity: 0; transform: scale(0.5); }
+        }
+
+        .profile-image {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            overflow: hidden;
+            z-index: 10;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .profile-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+        }
+    </style>
+</head>
+
+<body>
+
+<canvas id="backgroundCanvas"></canvas>
+
+<div class="profile-image">
+    <img src="Profile.jpg" alt="Profile">
+</div>
+
+<div class="container">
+    <h1>Collin Bishop</h1>
+    <p class="tagline">Designs for You</p>
+
+    <div class="contact-info">
+        <a href="c:\Users\colli\Downloads\Collin_Bishop_Resume (1 Page).pdf" class="resume-download" download>
+            My Resume
+        </a>
+    </div>
+
+    <div class="menu-grid">
+        <a href="experience.html" class="menu-item">Experience</a>
+        <a href="portfolio.html" class="menu-item">Portfolio</a>
+        <a href="skills.html" class="menu-item">Skills</a>
+        <a href="projects.html" class="menu-item">Projects</a>
+    </div>
+</div>
+
+<script>
+    const canvas = document.getElementById('backgroundCanvas');
+    const ctx = canvas.getContext('2d');
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let mouseX = canvas.width / 2;
+    let mouseY = canvas.height / 2;
+    const ballRadius = 10;
+
+    // Profile image collision circle
+    const profileImage = {
+        x: canvas.width - 110,
+        y: 110,
+        radius: 90
+    };
+
+    const particles = [];
+
+    class Particle {
+        constructor(x, y) {
+            this.x = x;
+            this.y = y;
+            this.baseX = x;
+            this.baseY = y;
+            this.vx = 0;
+            this.vy = 0;
+            this.size = 4;
+        }
+
+        update(mouseX, mouseY) {
+            const dx = mouseX - this.x;
+            const dy = mouseY - this.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            const maxDistance = 150;
+
+            if (distance < maxDistance) {
+                const force = (maxDistance - distance) / maxDistance;
+                const angle = Math.atan2(dy, dx);
+                this.vx = -Math.cos(angle) * force * 3;
+                this.vy = -Math.sin(angle) * force * 3;
+            }
+
+            this.vx *= 0.85;
+            this.vy *= 0.85;
+
+            this.x += this.vx;
+            this.y += this.vy;
+
+            // Add subtle drifting movement
+            const time = Date.now() * 0.001;
+            this.x += Math.sin(time + this.baseX * 0.1) * 0.3;
+            this.y += Math.cos(time + this.baseY * 0.1) * 0.3;
+        }
+
+        draw(ctx) {
+            ctx.fillStyle = '#F5F5F5';
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fill();
+        }
+    }
+
+    const gridSize = 20;
+    for (let y = 0; y < canvas.height; y += gridSize) {
+        for (let x = 0; x < canvas.width; x += gridSize) {
+            particles.push(new Particle(x, y));
+        }
+    }
+
+    document.addEventListener('mousemove', (e) => {
+        const newX = e.clientX;
+        const newY = e.clientY;
+        
+        handleImageCollision(newX, newY);
+
+        const trailParticle = document.createElement('div');
+        trailParticle.className = 'cursor-particle';
+        trailParticle.style.left = (mouseX - 7.5) + 'px';
+        trailParticle.style.top = (mouseY - 7.5) + 'px';
+
+        document.body.appendChild(trailParticle);
+
+        setTimeout(() => trailParticle.remove(), 800);
+    });
+
+    window.addEventListener('resize', () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        profileImage.x = canvas.width - 110;
+    });
+
+    function checkCollisionWithImage(ballX, ballY, ballRadius, imageX, imageY, imageRadius) {
+        const dx = ballX - imageX;
+        const dy = ballY - imageY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        return distance < (ballRadius + imageRadius);
+    }
+
+    function handleImageCollision(newX, newY) {
+        if (checkCollisionWithImage(newX, newY, ballRadius, profileImage.x, profileImage.y, profileImage.radius)) {
+            const dx = newX - profileImage.x;
+            const dy = newY - profileImage.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            
+            if (distance > 0) {
+                // Normalize direction vector
+                const nx = dx / distance;
+                const ny = dy / distance;
+                
+                // Push cursor out of collision zone
+                const minDistance = ballRadius + profileImage.radius;
+                mouseX = profileImage.x + nx * minDistance;
+                mouseY = profileImage.y + ny * minDistance;
+            }
+        } else {
+            mouseX = newX;
+            mouseY = newY;
+        }
+    }
+
+    function animate() {
+        const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+        gradient.addColorStop(0, '#3ea5d9');
+        gradient.addColorStop(1, '#2563a0');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        particles.forEach(p => {
+            p.update(mouseX, mouseY);
+            p.draw(ctx);
+        });
+
+        ctx.fillStyle = '#FFD700';
+        ctx.shadowColor = 'rgba(255, 215, 0, 0.8)';
+        ctx.shadowBlur = 15;
+        ctx.beginPath();
+        ctx.arc(mouseX, mouseY, ballRadius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowColor = 'transparent';
+
+        requestAnimationFrame(animate);
+    }
+
+    animate();
+</script>
+
+</body>
+</html>
